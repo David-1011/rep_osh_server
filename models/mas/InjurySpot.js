@@ -13,6 +13,7 @@ const InjurySpot = db.define(
     injurySpotId: {
       type: DataTypes.STRING(8),
       allowNull: false,
+      unique: true,
     },
     injurySpotText: {
       type: DataTypes.STRING,

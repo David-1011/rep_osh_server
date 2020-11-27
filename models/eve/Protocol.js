@@ -20,7 +20,7 @@ const InjuryEvent = db.define(
       allowNull: false,
     },
     eventDate: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: false,
     },
     eventTime: {
@@ -30,6 +30,26 @@ const InjuryEvent = db.define(
     eventDescription: {
       type: DataTypes.STRING(2047),
       allowNull: false,
+    },
+    eventMainAreaId: {
+      type: DataTypes.STRING(8),
+      allowNull: false,
+      references: {
+        model: 'mas_main_areas',
+        key: 'main_area_id',
+      },
+    },
+    eventSubAreaId: {
+      type: DataTypes.STRING(8),
+      allowNull: false,
+      references: {
+        model: 'mas_sub_areas',
+        key: 'sub_area_id',
+      },
+    },
+    additionalLocationInfo: {
+      type: DataTypes.STRING(),
+      allowNull: true,
     },
     oshCategorieId: {
       type: DataTypes.STRING(8),

@@ -6,7 +6,7 @@ const router = express.Router();
 const MainArea = require('../models/mas/MainArea');
 const SubArea = require('../models/mas/SubArea');
 const InjuryType = require('../models/mas/InjuryType');
-const InjurySpot = require('../models/mas/InjurySpots');
+const InjurySpot = require('../models/mas/InjurySpot');
 
 function newId(prefix, id) {
   let injuryTypeId = '00001';

@@ -13,6 +13,7 @@ const InjuryType = db.define(
     injuryTypeId: {
       type: DataTypes.STRING(8),
       allowNull: false,
+      unique: true,
     },
     injuryTypeText: {
       type: DataTypes.STRING,

@@ -1,8 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const db = require('../../config/db');
 
-const SubArea = db.define(
-  'masSubArea',
+const ProtocolSpot = db.define(
+  'eve_protocol_spot',
   {
     id: {
       type: DataTypes.UUID,
@@ -10,28 +10,26 @@ const SubArea = db.define(
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
-    subAreaId: {
+    eventId: {
       type: DataTypes.STRING(8),
-      allowNull: false,
-      unique: true,
+      references: {
+        model: 'eve_protocols',
+        key: 'event_id',
+      },
     },
-    subAreaText: {
-      type: DataTypes.STRING,
+    eventType: {
+      type: DataTypes.STRING(1),
       allowNull: false,
     },
-    active: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1,
-    },
-    mainAreaParentId: {
+    injurySpotId: {
       type: DataTypes.STRING(8),
       allowNull: false,
       references: {
-        model: 'mas_main_areas',
-        key: 'main_area_id',
+        model: 'mas_injury_spots',
+        key: 'injury_spot_id',
       },
     },
+
     createdBy: {
       type: DataTypes.STRING(16),
       allowNull: true,
@@ -47,4 +45,4 @@ const SubArea = db.define(
   }
 );
 
-module.exports = SubArea;
+module.exports = ProtocolSpot;
