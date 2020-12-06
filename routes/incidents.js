@@ -2,6 +2,8 @@ const express = require('express');
 const moment = require('moment');
 const { sequelize } = require('../models/eve/Protocol');
 
+const authenticateJWT = require('../middlewares/authenticateJWT');
+
 const router = express.Router();
 
 function newId(prefix, id) {
@@ -107,8 +109,8 @@ router.post('/', (req, res) => {
   });
 });
 
-router.get('/', (req, res) => {
-  res.send('Here is the get request');
+router.get('/', authenticateJWT, (req, res) => {
+  res.send(req.user.role);
 });
 
 module.exports = router;

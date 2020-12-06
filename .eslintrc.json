@@ -16,10 +16,9 @@
         "object-shorthand": "off",
         "class-method-use-this": "off",
         "no-undef": "warn",
-        "consistent-return": "warn",
+        "consistent-return": "off",
         "no-else-return": "off",
         "no-plusplus": "off",
         "camelcase": "warn"
-
     }
 }

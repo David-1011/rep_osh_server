@@ -3,6 +3,7 @@ const express = require('express');
 const compression = require('compression');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const app = express();
 
@@ -24,6 +25,7 @@ try {
 // Logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
+  app.use(cors());
 }
 
 // Bodyparser
@@ -36,6 +38,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 // Master-data Routes
 app.use('/api/masterdata/', require('./routes/master-data'));
+
+// Authentication Routes
+app.use('/api/auth/', require('./routes/auth'));
 
 // Other Routes
 app.use('/api/incidents/', require('./routes/incidents'));
