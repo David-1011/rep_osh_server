@@ -12,16 +12,6 @@ app.use(compression());
 // Load config
 dotenv.config({ path: './config/config.env' });
 
-// Database
-const db = require('./config/db');
-
-try {
-  db.authenticate();
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Unable to connect to the database:', error);
-}
-
 // Logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -37,16 +27,41 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 // Master-data Routes
-app.use('/api/masterdata/', require('./routes/master-data'));
+require('./routes/mast.routes')(app);
 
 // Authentication Routes
-app.use('/api/auth/', require('./routes/auth'));
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
 
-// Other Routes
-app.use('/api/incidents/', require('./routes/incidents'));
+// Event Routes
+require('./routes/inci.routes')(app);
+// app.use('/api/incidents/', require('./routes/incidents'));
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
+/*
+const db = require('./models');
+
+const Role = db.role;
+function initial() {
+  Role.create({
+    name: 'user',
+  });
+
+  Role.create({
+    name: 'moderator',
+  });
+
+  Role.create({
+    name: 'admin',
+  });
+}
+
+db.sequelize.sync({ force: true }).then(() => {
+  console.log('Drop and Resync Db');
+  initial();
+});
+*/
