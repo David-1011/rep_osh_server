@@ -27,41 +27,78 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.mainArea = require('./mas/mainArea.model')(sequelize, Sequelize);
-db.subArea = require('./mas/subArea.model')(sequelize, Sequelize);
 db.injurySpot = require('./mas/injurySpot.model')(sequelize, Sequelize);
 db.injuryType = require('./mas/injuryType.model')(sequelize, Sequelize);
+db.mainArea = require('./mas/mainArea.model')(sequelize, Sequelize);
+db.subArea = require('./mas/subArea.model')(sequelize, Sequelize);
+db.event = require('./eve/event.model')(sequelize, Sequelize);
+db.person = require('./eve/person.model')(sequelize, Sequelize);
 
-db.protocol = require('./eve/protocol.model')(sequelize, Sequelize);
+// Jede Main Area kann mehrere Subareas haben
+db.mainArea.hasMany(db.subArea, { as: 'subAreas' });
 
-db.protocol.belongsToMany(db.injurySpot, {
-  through: 'eve_protocol_spots',
-  foreignKey: 'eveEventId',
-  otherKey: 'masInjurySpotId',
+// Jede SubArea besitzt eine Main Area
+db.subArea.belongsTo(db.mainArea, {
+  foreignKey: 'masMainAreaId',
+  as: 'mainArea',
 });
 
-db.injurySpot.belongsToMany(db.protocol, {
-  through: 'eve_protocol_spots',
+// Jede Main Area kann mehreren Events zugeordnet werden
+db.mainArea.hasMany(db.event, { as: 'events' });
+
+// Jedem Event Eintrag wird eine Main Area zugeordnet
+db.event.belongsTo(db.mainArea, {
+  foreignKey: 'masMainAreaId',
+  as: 'mainArea',
+});
+
+// Jede Sub Area kann mehreren Events zugeordnet werden
+db.subArea.hasMany(db.event, { as: 'events' });
+
+// Jedem Event Eintrag wird eine Sub Area zugeordnet
+db.event.belongsTo(db.subArea, {
+  foreignKey: 'masSubAreaId',
+  as: 'subArea',
+});
+
+// Jedem Event können mehrere Verletzungsstellen zugeordnet werden
+db.event.belongsToMany(db.injurySpot, {
+  through: 'eve_event_spots',
+  foreignKey: 'eveEventId',
+  otherKey: 'masInjurySpotId',
+  as: 'injurySpots',
+});
+
+// Jede Verletztungsstelle kann mehreren Events zugeordnet werden
+db.injurySpot.belongsToMany(db.event, {
+  through: 'eve_event_spots',
   foreignKey: 'masInjurySpotId',
   otherKey: 'eveEventId',
 });
 
-db.protocol.belongsToMany(db.injuryType, {
-  through: 'eve_protocol_types',
+// Jedem Event können mehrere Verletzungsarten zugeordnet werden
+db.event.belongsToMany(db.injuryType, {
+  through: 'eve_event_types',
   foreignKey: 'eveEventId',
   otherKey: 'masInjuryTypeId',
+  as: 'injuryTypes',
 });
 
-db.injuryType.belongsToMany(db.protocol, {
-  through: 'eve_protocol_types',
+// Jede Verletzungsart kann mehreren Events zugeordnet werden
+db.injuryType.belongsToMany(db.event, {
+  through: 'eve_event_types',
   foreignKey: 'masInjuryTypeId',
   otherKey: 'eveEventId',
 });
 
-db.protocolPersonalData = require('./eve/protocolPersonalData.model')(
-  sequelize,
-  Sequelize
-);
+// Jedem Event können mehrere personenbezogene Daten zugewiesen werden
+db.event.hasMany(db.person, { as: 'people' });
+
+// Personenbezogene Daten können nur einem Event zugeordnet werden
+db.person.belongsTo(db.event, {
+  foreignKey: 'eveEventId',
+  as: 'event',
+});
 
 db.user = require('./use/user.model.js')(sequelize, Sequelize);
 db.role = require('./use/role.model.js')(sequelize, Sequelize);

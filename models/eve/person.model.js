@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-  const ProtocolSpot = sequelize.define(
-    'eve_protocol_spot',
+  const Person = sequelize.define(
+    'eveEventPerson',
     {
       id: {
         type: Sequelize.UUID,
@@ -8,24 +8,17 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      eventId: {
-        type: Sequelize.STRING(8),
-        references: {
-          model: 'eve_protocols',
-          key: 'event_id',
-        },
-      },
-      eventType: {
-        type: Sequelize.STRING(1),
+      personType: {
+        type: Sequelize.STRING(16),
         allowNull: false,
       },
-      injurySpotId: {
-        type: Sequelize.STRING(8),
+      firstNameEncrypted: {
+        type: Sequelize.STRING(2048),
         allowNull: false,
-        references: {
-          model: 'mas_injury_spots',
-          key: 'injury_spot_id',
-        },
+      },
+      lastNameEncrypted: {
+        type: Sequelize.STRING(2048),
+        allowNull: false,
       },
       createdBy: {
         type: Sequelize.STRING(16),
@@ -41,5 +34,5 @@ module.exports = (sequelize, Sequelize) => {
       underscored: true,
     }
   );
-  return ProtocolSpot;
+  return Person;
 };

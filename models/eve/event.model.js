@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const InjuryEvent = sequelize.define(
-    'eve_protocol',
+    'eveEvent',
     {
       id: {
         type: Sequelize.UUID,
@@ -8,42 +8,21 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      eventId: {
-        type: Sequelize.STRING(8),
-        allowNull: false,
-        unique: true,
-      },
-      eventType: {
+      type: {
         type: Sequelize.STRING(1),
         allowNull: false,
       },
-      eventDate: {
+      date: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      eventTime: {
+      time: {
         type: Sequelize.DOUBLE,
         allowNull: false,
       },
-      eventDescription: {
+      description: {
         type: Sequelize.STRING(2047),
         allowNull: false,
-      },
-      eventMainAreaId: {
-        type: Sequelize.STRING(8),
-        allowNull: false,
-        references: {
-          model: 'mas_main_areas',
-          key: 'main_area_id',
-        },
-      },
-      eventSubAreaId: {
-        type: Sequelize.STRING(8),
-        allowNull: false,
-        references: {
-          model: 'mas_sub_areas',
-          key: 'sub_area_id',
-        },
       },
       additionalLocationInfo: {
         type: Sequelize.STRING(),

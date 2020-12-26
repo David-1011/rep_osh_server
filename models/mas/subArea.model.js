@@ -8,11 +8,6 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      subAreaId: {
-        type: Sequelize.STRING(8),
-        allowNull: false,
-        unique: true,
-      },
       subAreaText: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -21,14 +16,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 1,
-      },
-      mainAreaParentId: {
-        type: Sequelize.STRING(8),
-        allowNull: false,
-        references: {
-          model: 'mas_main_areas',
-          key: 'main_area_id',
-        },
       },
       createdBy: {
         type: Sequelize.STRING(16),

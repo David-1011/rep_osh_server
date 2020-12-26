@@ -8,12 +8,7 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      injurySpotId: {
-        type: Sequelize.STRING(8),
-        allowNull: false,
-        unique: true,
-      },
-      injurySpotText: {
+      spotText: {
         type: Sequelize.STRING,
         allowNull: false,
       },

@@ -8,11 +8,6 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      mainAreaId: {
-        type: Sequelize.STRING(8),
-        allowNull: false,
-        unique: true,
-      },
       mainAreaText: {
         type: Sequelize.STRING,
         allowNull: false,

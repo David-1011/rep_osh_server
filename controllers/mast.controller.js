@@ -1,15 +1,5 @@
 const db = require('../models');
 
-const newId = (prefix, id) => {
-  let injuryTypeId = '00001';
-  if (id !== undefined && id !== null) {
-    const highestId = parseInt(id.dataValues.id.substring(2, 7), 10);
-    injuryTypeId = highestId + 1;
-    injuryTypeId = `0000${injuryTypeId}`.slice(-5);
-  }
-  return `${prefix}${injuryTypeId}`;
-};
-
 const InjuryType = db.injuryType;
 const InjurySpot = db.injurySpot;
 const MainArea = db.mainArea;
@@ -133,128 +123,64 @@ exports.findAllSubAreas = (req, res) => {
 
 exports.addInjuryType = (req, res) => {
   const { injuryTypeText, ranking, textEn, textFr, textRo, textEs } = req.body;
-  InjuryType.findOne({
-    attributes: [['injury_type_id', 'id']],
-    order: [['injuryTypeId', 'DESC']],
+  InjuryType.create({
+    typeText: injuryTypeText,
+    ranking,
+    textEn,
+    textFr,
+    textRo,
+    textEs,
   })
-    .then((oldestDbe) => {
-      const newUniqueId = newId('IT', oldestDbe);
-      if (injuryTypeText !== undefined && injuryTypeText !== '') {
-        const newDbe = new InjuryType({
-          injuryTypeId: newUniqueId,
-          injuryTypeText,
-          ranking,
-          textEn,
-          textFr,
-          textRo,
-          textEs,
-        });
-        newDbe
-          .save()
-          .then((dbe) => {
-            res.status(200).send(dbe);
-          })
-          .catch((err) => {
-            res.status(400).send(err);
-          });
-      } else {
-        res.status(200).send('Grundtext nicht definiert');
-      }
+    .then((dbe) => {
+      res.status(200).send(dbe);
     })
-    .catch((err) => res.status(500).send(err));
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 };
 
 exports.addInjurySpot = (req, res) => {
   const { injurySpotText, ranking, textEn, textFr, textRo, textEs } = req.body;
-  InjurySpot.findOne({
-    attributes: [['injury_spot_id', 'id']],
-    order: [['injurySpotId', 'DESC']],
+  InjurySpot.create({
+    spotText: injurySpotText,
+    ranking,
+    textEn,
+    textFr,
+    textRo,
+    textEs,
   })
-    .then((oldestDbe) => {
-      const newUniqueId = newId('IS', oldestDbe);
-      if (injurySpotText !== undefined && injurySpotText !== '') {
-        const newDbe = new InjurySpot({
-          injurySpotId: newUniqueId,
-          injurySpotText,
-          ranking,
-          textEn,
-          textFr,
-          textRo,
-          textEs,
-        });
-        newDbe
-          .save()
-          .then((dbe) => {
-            res.status(200).send(dbe);
-          })
-          .catch((err) => {
-            res.status(400).send(err);
-          });
-      } else {
-        res.status(200).send('Grundtext nicht definiert');
-      }
+    .then((dbe) => {
+      res.status(200).send(dbe);
     })
-    .catch((err) => res.status(500).send(err));
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 };
 
 exports.addMainArea = (req, res) => {
   const { mainAreaText } = req.body;
-  MainArea.findOne({
-    attributes: [['main_area_id', 'id']],
-    order: [['mainAreaId', 'DESC']],
+
+  MainArea.create({
+    mainAreaText,
   })
-    .then((oldestDbe) => {
-      const newUniqueId = newId('MA', oldestDbe);
-      if (mainAreaText !== undefined && mainAreaText !== '') {
-        const newDbe = new MainArea({
-          mainAreaId: newUniqueId,
-          mainAreaText,
-        });
-        newDbe
-          .save()
-          .then((dbe) => {
-            res.status(200).send(dbe);
-          })
-          .catch((err) => {
-            res.status(400).send(err);
-          });
-      } else {
-        res.status(200).send('Grundtext nicht definiert');
-      }
+    .then((dbe) => {
+      res.status(200).send(dbe);
     })
-    .catch((err) => res.status(500).send(err));
+    .catch((err) => {
+      res.send(400).send(err);
+    });
 };
 
 exports.addSubArea = (req, res) => {
-  const { subAreaText, mainAreaParentId } = req.body;
-  SubArea.findOne({
-    attributes: [['sub_area_id', 'id']],
-    order: [['subAreaId', 'DESC']],
+  const { subAreaText, mainAreaId } = req.body;
+  SubArea.create({
+    subAreaText,
+    masMainAreaId: mainAreaId,
   })
-    .then((oldestDbe) => {
-      const newUniqueId = newId('SA', oldestDbe);
-      if (
-        subAreaText !== undefined &&
-        subAreaText !== '' &&
-        mainAreaParentId !== undefined &&
-        mainAreaParentId !== ''
-      ) {
-        const newDbe = new SubArea({
-          subAreaId: newUniqueId,
-          subAreaText,
-          mainAreaParentId,
-        });
-        newDbe
-          .save()
-          .then((dbe) => {
-            res.status(200).send(dbe);
-          })
-          .catch((err) => {
-            res.status(400).send(err);
-          });
-      } else {
-        res.status(200).send('Grundtext nicht definiert');
-      }
+    .then((dbe) => {
+      res.status(200).send(dbe);
     })
-    .catch((err) => res.status(500).send(err));
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 };
