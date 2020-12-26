@@ -6,14 +6,7 @@ const MainArea = db.mainArea;
 const SubArea = db.subArea;
 
 exports.findAllInjuryTypes = (req, res) => {
-  let attributes = [
-    'injuryTypeId',
-    'injuryTypeText',
-    'textEn',
-    'textFr',
-    'textRo',
-    'textEs',
-  ];
+  let attributes = ['id', 'typeText', 'textEn', 'textFr', 'textRo', 'textEs'];
   let active = 1;
   if (req.body.attributes !== undefined) {
     attributes = req.body.attributes;
@@ -26,7 +19,10 @@ exports.findAllInjuryTypes = (req, res) => {
     where: {
       active: active,
     },
-    order: [['ranking', 'DESC']],
+    order: [
+      ['ranking', 'DESC'],
+      ['typeText', 'ASC'],
+    ],
   })
     .then((injuryTypes) => {
       res.status(200).json(injuryTypes);
@@ -37,14 +33,7 @@ exports.findAllInjuryTypes = (req, res) => {
 };
 
 exports.findAllInjurySpots = (req, res) => {
-  let attributes = [
-    'injurySpotId',
-    'injurySpotText',
-    'textEn',
-    'textFr',
-    'textRo',
-    'textEs',
-  ];
+  let attributes = ['id', 'spotText', 'textEn', 'textFr', 'textRo', 'textEs'];
   let active = 1;
   if (req.body.attributes !== undefined) {
     attributes = req.body.attributes;
@@ -59,7 +48,7 @@ exports.findAllInjurySpots = (req, res) => {
     },
     order: [
       ['ranking', 'DESC'],
-      ['injurySpotId', 'ASC'],
+      ['spotText', 'ASC'],
     ],
   })
     .then((response) => {
@@ -72,7 +61,7 @@ exports.findAllInjurySpots = (req, res) => {
 };
 
 exports.findAllMainAreas = (req, res) => {
-  let attributes = ['mainAreaId', 'mainAreaText'];
+  let attributes = ['id', 'mainAreaText'];
   let active = 1;
   if (req.body.attributes !== undefined) {
     attributes = req.body.attributes;
@@ -97,7 +86,7 @@ exports.findAllMainAreas = (req, res) => {
 };
 
 exports.findAllSubAreas = (req, res) => {
-  let attributes = ['subAreaId', 'subAreaText', 'mainAreaParentId'];
+  let attributes = ['id', 'subAreaText', 'masMainAreaId'];
   let active = 1;
   if (req.body.attributes !== undefined) {
     attributes = req.body.attributes;
