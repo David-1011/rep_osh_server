@@ -30,7 +30,7 @@ exports.addIncidentEntry = (req, res) => {
           },
         },
       }).then((spots) => {
-        event.setMasInjurySpots(spots);
+        event.setInjurySpots(spots);
       });
     }
     if (injuryData.types) {
@@ -41,7 +41,7 @@ exports.addIncidentEntry = (req, res) => {
           },
         },
       }).then((types) => {
-        event.setMasInjuryTypes(types);
+        event.setInjuryTypes(types);
       });
     }
     if (personalData) {
