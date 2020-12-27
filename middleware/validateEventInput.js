@@ -41,7 +41,7 @@ const validateInjuryInput = (req, res, next) => {
   }
 
   // MainArea
-  if (incidentData.masMainAreaId.length === 0) {
+  if (incidentData.mainArea.length === 0) {
     errors++;
     validation.mainAreaValid = -1;
   } else {
@@ -49,7 +49,7 @@ const validateInjuryInput = (req, res, next) => {
   }
 
   // Subarea
-  if (incidentData.masSubAreaId.length === 0) {
+  if (incidentData.subArea.length === 0) {
     errors++;
     validation.subAreaValid = -1;
   } else {
