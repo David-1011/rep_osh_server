@@ -91,7 +91,7 @@ const validateInjuryInput = (req, res, next) => {
   if (errors === 0) {
     next();
   } else {
-    res.status(200).send(validation);
+    res.status(200).send({ msg: 'Validation failed', validation });
   }
 };
 
