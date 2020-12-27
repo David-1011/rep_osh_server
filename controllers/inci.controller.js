@@ -18,8 +18,8 @@ exports.addIncidentEntry = (req, res) => {
     date: incidentData.incidentDate,
     time: time.hour() * 3600 + time.minute() * 60 + time.second(),
     description: incidentData.incidentDescription,
-    masMainAreaId: incidentData.masMainAreaId,
-    masSubAreaId: incidentData.masSubAreaId,
+    masMainAreaId: incidentData.mainArea,
+    masSubAreaId: incidentData.subArea,
     additionalLocationInfo: incidentData.additionalLocationInfo,
   }).then((event) => {
     if (injuryData.spots) {
