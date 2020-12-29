@@ -35,70 +35,48 @@ db.event = require('./eve/event.model')(sequelize, Sequelize);
 db.person = require('./eve/person.model')(sequelize, Sequelize);
 
 // Jede Main Area kann mehrere Subareas haben
-db.mainArea.hasMany(db.subArea, { as: 'subAreas' });
+db.mainArea.hasMany(db.subArea);
 
 // Jede SubArea besitzt eine Main Area
-db.subArea.belongsTo(db.mainArea, {
-  foreignKey: 'masMainAreaId',
-  as: 'mainArea',
-});
+db.subArea.belongsTo(db.mainArea);
 
 // Jede Main Area kann mehreren Events zugeordnet werden
-db.mainArea.hasMany(db.event, { as: 'events' });
+db.mainArea.hasMany(db.event);
 
 // Jedem Event Eintrag wird eine Main Area zugeordnet
-db.event.belongsTo(db.mainArea, {
-  foreignKey: 'masMainAreaId',
-  as: 'mainArea',
-});
+db.event.belongsTo(db.mainArea);
 
 // Jede Sub Area kann mehreren Events zugeordnet werden
-db.subArea.hasMany(db.event, { as: 'events' });
+db.subArea.hasMany(db.event);
 
 // Jedem Event Eintrag wird eine Sub Area zugeordnet
-db.event.belongsTo(db.subArea, {
-  foreignKey: 'masSubAreaId',
-  as: 'subArea',
-});
+db.event.belongsTo(db.subArea);
 
 // Jedem Event können mehrere Verletzungsstellen zugeordnet werden
 db.event.belongsToMany(db.injurySpot, {
   through: 'eve_event_spots',
-  foreignKey: 'eveEventId',
-  otherKey: 'masInjurySpotId',
-  as: 'injurySpots',
 });
 
 // Jede Verletztungsstelle kann mehreren Events zugeordnet werden
 db.injurySpot.belongsToMany(db.event, {
   through: 'eve_event_spots',
-  foreignKey: 'masInjurySpotId',
-  otherKey: 'eveEventId',
 });
 
 // Jedem Event können mehrere Verletzungsarten zugeordnet werden
 db.event.belongsToMany(db.injuryType, {
   through: 'eve_event_types',
-  foreignKey: 'eveEventId',
-  otherKey: 'masInjuryTypeId',
-  as: 'injuryTypes',
 });
 
 // Jede Verletzungsart kann mehreren Events zugeordnet werden
 db.injuryType.belongsToMany(db.event, {
   through: 'eve_event_types',
-  foreignKey: 'masInjuryTypeId',
-  otherKey: 'eveEventId',
 });
 
 // Jedem Event können mehrere personenbezogene Daten zugewiesen werden
-db.event.hasMany(db.person, { as: 'people' });
+db.event.hasMany(db.person);
 
 // Personenbezogene Daten können nur einem Event zugeordnet werden
-db.person.belongsTo(db.event, {
-  foreignKey: 'eveEventId',
-  as: 'event',
-});
+db.person.belongsTo(db.event);
 
 db.user = require('./use/user.model.js')(sequelize, Sequelize);
 db.role = require('./use/role.model.js')(sequelize, Sequelize);

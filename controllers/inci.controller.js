@@ -61,27 +61,78 @@ exports.addIncidentEntry = (req, res) => {
 
 exports.findAllIncidentsDecrypted = (req, res) => {
   Event.findAll({
-    include: ['mainArea', 'subArea', 'people', 'injurySpots'],
+    // include: ['mainArea', 'subArea', 'people', 'injurySpots'],
+    attributes: {
+      exclude: ['masMainAreaId'],
+    },
+    include: [
+      {
+        model: db.mainArea,
+        attributes: ['id', 'mainAreaText'],
+      },
+      {
+        model: db.subArea,
+        attributes: {
+          exclude: ['createdBy', 'updatedBy', 'updatedAt'],
+        },
+      },
+      {
+        model: db.person,
+        attributes: {
+          exclude: ['createdBy', 'updatedBy', 'updatedAt'],
+        },
+      },
+      {
+        model: db.injurySpot,
+        attributes: {
+          exclude: ['createdBy', 'updatedBy', 'updatedAt'],
+        },
+      },
+    ],
   })
     .then((events) => {
       for (let i = 0; i < events.length; i++) {
         const event = events[i];
-        for (let x = 0; x < event.people.length; x++) {
-          const person = event.people[x];
-          events[i].people[x].setDataValue(
+        for (let x = 0; x < event.eveEventPeople.length; x++) {
+          const person = event.eveEventPeople[x];
+          events[i].eveEventPeople[x].setDataValue(
             'firstName',
             decrypt(person.firstNameEncrypted)
           );
-          events[i].people[x].setDataValue(
+          events[i].eveEventPeople[x].setDataValue('firstNameEncrypted', '');
+          events[i].eveEventPeople[x].setDataValue(
             'lastName',
             decrypt(person.lastNameEncrypted)
           );
+          events[i].eveEventPeople[x].setDataValue('lastNameEncrypted', '');
         }
       }
 
       res.status(200).send(events);
     })
     .catch((err) => {
+      console.log(err);
       res.status(400).send(err);
+    });
+};
+
+exports.updatePerson = (req, res) => {
+  Person.update(
+    {
+      firstNameEncrypted: encrypt(req.body.firstName),
+      lastNameEncrypted: encrypt(req.body.lastName),
+    },
+    {
+      where: {
+        id: req.body.id,
+      },
+    }
+  )
+    .then(() => {
+      res.status(200).send('OK');
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send(err.message);
     });
 };

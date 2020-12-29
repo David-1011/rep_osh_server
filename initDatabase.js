@@ -84,7 +84,7 @@ function initial() {
 
   const hash = bcrypt.hashSync('12345', 8);
   User.create({
-    email: 'admin',
+    email: 'ad@min.de',
     firstName: 'admin',
     lastName: 'admin',
     password: hash,

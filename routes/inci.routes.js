@@ -9,6 +9,12 @@ module.exports = (app) => {
     controller.findAllIncidentsDecrypted
   );
 
+  app.patch(
+    '/api/event/person',
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.updatePerson
+  );
+
   app.post(
     '/api/event/incident',
     validateInjuryInput,
