@@ -18,7 +18,7 @@ let refreshTokens = [];
 
 exports.signup = (req, res) => {
   // Save User to Database
-  const saltRounds = 10;
+  const saltRounds = 8;
   bcrypt.hash(req.body.password, saltRounds, (err1, hash) => {
     if (err1) res.send(err1.name);
 

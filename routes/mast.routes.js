@@ -16,9 +16,25 @@ module.exports = (app) => {
   app.get('/api/mast/MainAreas', controller.findAllMainAreas);
   app.get('/api/mast/SubAreas', controller.findAllSubAreas);
 
-  app.post('/api/mast/injuryType', controller.addInjuryType);
-  app.post('/api/mast/injurySpot', controller.addInjurySpot);
-  app.post('/api/mast/mainArea', controller.addMainArea);
-  app.post('/api/mast/subArea', controller.addSubArea);
+  app.post(
+    '/api/mast/injuryType',
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.addInjuryType
+  );
+  app.post(
+    '/api/mast/injurySpot',
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.addInjurySpot
+  );
+  app.post(
+    '/api/mast/mainArea',
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.addMainArea
+  );
+  app.post(
+    '/api/mast/subArea',
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.addSubArea
+  );
 };
 //    [authJwt.verifyToken, authJwt.isAdmin],

@@ -42,56 +42,8 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
+
 /*
-const db = require('./models');
-
-const Role = db.role;
-const MainArea = db.mainArea;
-const SubArea = db.subArea;
-function initial() {
-  Role.create({
-    name: 'user',
-  });
-
-  Role.create({
-    name: 'moderator',
-  });
-
-  Role.create({
-    name: 'admin',
-  });
-
-  MainArea.create({
-    mainAreaText: 'Aktive Systeme',
-  }).then((dbe) => {
-    SubArea.bulkCreate([
-      { subAreaText: 'AS - Vorfertigung', masMainAreaId: dbe.id },
-      { subAreaText: 'AS - Lackieranlage', masMainAreaId: dbe.id },
-      { subAreaText: 'AS - Endmontage', masMainAreaId: dbe.id },
-    ]);
-  });
-  MainArea.create({
-    mainAreaText: 'Passive Systeme',
-  }).then((dbe) => {
-    SubArea.bulkCreate([
-      { subAreaText: 'PS - 1 Rohr', masMainAreaId: dbe.id },
-      { subAreaText: 'PS - 2 Rohr', masMainAreaId: dbe.id },
-      { subAreaText: 'PS - Kell', masMainAreaId: dbe.id },
-    ]);
-  });
-  MainArea.create({
-    mainAreaText: 'Komponente',
-  }).then((dbe) => {
-    SubArea.bulkCreate([
-      { subAreaText: 'KO - Rohrfertigung', masMainAreaId: dbe.id },
-      { subAreaText: 'KO - Laserschweißen', masMainAreaId: dbe.id },
-      { subAreaText: 'KO - Verschlusspakete', masMainAreaId: dbe.id },
-    ]);
-  });
-}
-
-db.sequelize.sync({ force: true }).then(() => {
-  console.log('Drop and Resync Db');
-  initial();
-});
+const { initDatabase } = require('./initDatabase');
+initDatabase();
 */
