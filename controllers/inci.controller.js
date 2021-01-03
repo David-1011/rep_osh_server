@@ -73,19 +73,19 @@ exports.findAllIncidentsDecrypted = (req, res) => {
       {
         model: db.subArea,
         attributes: {
-          exclude: ['createdBy', 'updatedBy', 'updatedAt'],
+          exclude: ['updatedAt'],
         },
       },
       {
         model: db.person,
         attributes: {
-          exclude: ['createdBy', 'updatedBy', 'updatedAt'],
+          exclude: ['updatedAt'],
         },
       },
       {
         model: db.injurySpot,
         attributes: {
-          exclude: ['createdBy', 'updatedBy', 'updatedAt'],
+          exclude: ['updatedAt'],
         },
       },
     ],
