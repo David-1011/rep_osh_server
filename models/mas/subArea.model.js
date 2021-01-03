@@ -17,15 +17,6 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         defaultValue: 1,
       },
-      createdBy: {
-        type: Sequelize.STRING(16),
-        allowNull: true,
-        defaultValue: 'SYSTEM',
-      },
-      updatedBy: {
-        type: Sequelize.STRING(16),
-        allowNull: true,
-      },
     },
     {
       underscored: true,

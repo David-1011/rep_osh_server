@@ -37,15 +37,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      createdBy: {
-        type: Sequelize.STRING(16),
-        allowNull: true,
-        defaultValue: 'SYSTEM',
-      },
-      updatedBy: {
-        type: Sequelize.STRING(16),
-        allowNull: true,
-      },
     },
     {
       underscored: true,

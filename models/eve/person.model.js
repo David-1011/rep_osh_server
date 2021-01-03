@@ -20,15 +20,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING(2048),
         allowNull: false,
       },
-      createdBy: {
-        type: Sequelize.STRING(16),
-        allowNull: true,
-        defaultValue: 'SYSTEM',
-      },
-      updatedBy: {
-        type: Sequelize.STRING(16),
-        allowNull: true,
-      },
     },
     {
       underscored: true,

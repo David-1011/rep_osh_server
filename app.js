@@ -44,5 +44,6 @@ app.listen(PORT, () => {
 });
 /*
 const { initDatabase } = require('./initDatabase');
+
 initDatabase();
 */

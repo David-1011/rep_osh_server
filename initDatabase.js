@@ -10,6 +10,19 @@ const User = db.user;
 function initial() {
   Role.bulkCreate([{ name: 'user' }, { name: 'moderator' }, { name: 'admin' }]);
 
+  const hash = bcrypt.hashSync('12345', 8);
+  User.create({
+    id: '00000-00000-00000-00000-00000-000-00',
+    email: 'ad@min.de',
+    firstName: 'System',
+    lastName: 'Admin',
+    password: hash,
+  }).then((user) => {
+    user.setUseRoles([1, 2, 3]).then(() => {
+      console.log('user');
+    });
+  });
+
   InjuryType.bulkCreate([
     { typeText: 'Bruch' },
     { typeText: 'Quetschung' },
@@ -80,18 +93,6 @@ function initial() {
       { subAreaText: 'SB - OPX', masMainAreaId: dbe.id },
       { subAreaText: 'SB - Facility Management', masMainAreaId: dbe.id },
     ]);
-  });
-
-  const hash = bcrypt.hashSync('12345', 8);
-  User.create({
-    email: 'ad@min.de',
-    firstName: 'admin',
-    lastName: 'admin',
-    password: hash,
-  }).then((user) => {
-    user.setUseRoles([1, 2, 3]).then(() => {
-      console.log('user');
-    });
   });
 }
 

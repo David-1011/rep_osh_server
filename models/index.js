@@ -33,12 +33,17 @@ db.mainArea = require('./mas/mainArea.model')(sequelize, Sequelize);
 db.subArea = require('./mas/subArea.model')(sequelize, Sequelize);
 db.event = require('./eve/event.model')(sequelize, Sequelize);
 db.person = require('./eve/person.model')(sequelize, Sequelize);
+db.user = require('./use/user.model.js')(sequelize, Sequelize);
+db.role = require('./use/role.model.js')(sequelize, Sequelize);
 
 // Jede Main Area kann mehrere Subareas haben
 db.mainArea.hasMany(db.subArea);
 
 // Jede SubArea besitzt eine Main Area
 db.subArea.belongsTo(db.mainArea);
+
+// Jede Main Area hat einen User als Creator
+db.mainArea.belongsTo(db.user, { as: 'lastEditor' });
 
 // Jede Main Area kann mehreren Events zugeordnet werden
 db.mainArea.hasMany(db.event);
@@ -48,9 +53,6 @@ db.event.belongsTo(db.mainArea);
 
 // Jede Sub Area kann mehreren Events zugeordnet werden
 db.subArea.hasMany(db.event);
-
-// Jedem Event Eintrag wird eine Sub Area zugeordnet
-db.event.belongsTo(db.subArea);
 
 // Jedem Event können mehrere Verletzungsstellen zugeordnet werden
 db.event.belongsToMany(db.injurySpot, {
@@ -78,18 +80,14 @@ db.event.hasMany(db.person);
 // Personenbezogene Daten können nur einem Event zugeordnet werden
 db.person.belongsTo(db.event);
 
-db.user = require('./use/user.model.js')(sequelize, Sequelize);
-db.role = require('./use/role.model.js')(sequelize, Sequelize);
-
+// Jede Benutzerolle kann mehreren Benutzern zugeordnet werden
 db.role.belongsToMany(db.user, {
   through: 'use_user_roles',
-  foreignKey: 'useRoleId',
-  otherKey: 'useUserId',
 });
+
+// Jedem Benutzer können mehrere Rollen zugeordnet werden
 db.user.belongsToMany(db.role, {
   through: 'use_user_roles',
-  foreignKey: 'useUserId',
-  otherKey: 'useRoleId',
 });
 
 db.ROLES = ['user', 'admin', 'moderator'];
