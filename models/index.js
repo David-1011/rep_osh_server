@@ -38,21 +38,18 @@ db.role = require('./use/role.model.js')(sequelize, Sequelize);
 
 // Jede Main Area kann mehrere Subareas haben
 db.mainArea.hasMany(db.subArea);
-
 // Jede SubArea besitzt eine Main Area
 db.subArea.belongsTo(db.mainArea);
 
-// Jede Main Area hat einen User als Creator
-db.mainArea.belongsTo(db.user, { as: 'lastEditor' });
-
 // Jede Main Area kann mehreren Events zugeordnet werden
 db.mainArea.hasMany(db.event);
-
 // Jedem Event Eintrag wird eine Main Area zugeordnet
 db.event.belongsTo(db.mainArea);
 
 // Jede Sub Area kann mehreren Events zugeordnet werden
 db.subArea.hasMany(db.event);
+// Jedem Event Eintrag wird eine Sub Area zugeordnet
+db.event.belongsTo(db.subArea);
 
 // Jedem Event können mehrere Verletzungsstellen zugeordnet werden
 db.event.belongsToMany(db.injurySpot, {

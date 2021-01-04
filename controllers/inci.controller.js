@@ -89,6 +89,7 @@ exports.findAllIncidentsDecrypted = (req, res) => {
         },
       },
     ],
+    order: [[{ model: db.person }, 'personType', 'ASC']],
   })
     .then((events) => {
       for (let i = 0; i < events.length; i++) {
