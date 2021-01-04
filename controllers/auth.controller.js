@@ -39,7 +39,7 @@ exports.signup = (req, res) => {
   });
 };
 
-exports.signin = (req, res) => {
+exports.login = (req, res) => {
   User.findOne({
     where: {
       email: req.body.email,
@@ -86,10 +86,13 @@ exports.signin = (req, res) => {
               authorities.push(`ROLE_ + ${roles[i].name.toUpperCase()}`);
             }
             res.status(200).send({
-              email: user.email,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              roles: authorities,
+              user: {
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                roles: authorities,
+              },
+
               accessToken,
             });
           });
