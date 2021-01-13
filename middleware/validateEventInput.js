@@ -1,10 +1,20 @@
+const moment = require('moment');
+
+const validate = (content) => {
+  if (content.length === 0) {
+    return -1;
+  } else {
+    return 1;
+  }
+};
+
 const validateInjuryInput = (req, res, next) => {
   try {
-    let errors = 0;
-    const validation = {
+    const val = {
       injuredValid1: 0,
       injuredValid2: 0,
       witnessValid1: 0,
+      datetimeValid1: 0,
       mainAreaValid: 0,
       subAreaValid: 0,
       descriptionValid: 0,
@@ -13,87 +23,56 @@ const validateInjuryInput = (req, res, next) => {
     };
 
     const { personalData, incidentData, injuryData } = req.body;
-    // Injured firstName
-    if (personalData[0].firstName.length === 0) {
-      errors++;
-      validation.injuredValid1 = -1;
-    } else {
-      validation.injuredValid1 = 1;
-    }
+    const inciData = incidentData;
 
-    if (personalData[0].lastName.length === 0) {
-      errors++;
-      validation.injuredValid2 = -1;
-    } else {
-      validation.injuredValid2 = 1;
-    }
+    // Injured firstName
+    val.injuredValid1 = validate(personalData.people[0].firstName);
+
+    val.injuredValid2 = validate(personalData.people[0].lastName);
 
     // Witness
     if (
-      (personalData[1].firstName.length === 0 ||
-        personalData[1].lastName.length === 0) &&
-      !personalData[1].noWitness
+      (personalData.people[1].firstName.length === 0 ||
+        personalData.people[1].lastName.length === 0) &&
+      !personalData.noWitness
     ) {
-      errors++;
-      validation.witnessValid1 = -1;
+      val.witnessValid1 = -1;
     } else {
-      validation.witnessValid1 = 1;
+      val.witnessValid1 = 1;
+    }
+
+    // DateTime
+    const dt = moment(`${inciData.incidentDate} ${inciData.incidentTime}`);
+    if (dt.isAfter(moment())) {
+      val.datetimeValid1 = -1;
+    } else {
+      val.datetimeValid1 = 1;
     }
 
     // MainArea
-    if (incidentData.mainArea.length === 0) {
-      errors++;
-      validation.mainAreaValid = -1;
-    } else {
-      validation.mainAreaValid = 1;
-    }
+    val.mainAreaValid = validate(inciData.mainArea);
 
     // Subarea
-    if (incidentData.subArea.length === 0) {
-      errors++;
-      validation.subAreaValid = -1;
-    } else {
-      validation.subAreaValid = 1;
-    }
+    val.subAreaValid = validate(inciData.subArea);
 
     // Description
-    if (incidentData.incidentDescription.length === 0) {
-      errors++;
-      validation.descriptionValid = -1;
-    } else {
-      validation.descriptionValid = 1;
-    }
-
-    // Description
-    if (incidentData.incidentDescription.length === 0) {
-      errors++;
-      validation.descriptionValid = -1;
-    } else {
-      validation.descriptionValid = 1;
-    }
+    val.descriptionValid = validate(inciData.incidentDescription);
 
     // Spots
-    if (injuryData.spots.length === 0) {
-      errors++;
-      validation.spotsValid = -1;
-    } else {
-      validation.spotsValid = 1;
-    }
+    val.spotsValid = validate(injuryData.injurySpots);
 
     // Types
-    if (injuryData.types.length === 0) {
-      errors++;
-      validation.typesValid = -1;
-    } else {
-      validation.typesValid = 1;
-    }
+    val.typesValid = validate(injuryData.injuryTypes);
 
-    if (errors === 0) {
+    const errors = Object.values(val).indexOf(-1);
+
+    if (errors === -1) {
       next();
     } else {
-      res.status(422).send(validation);
+      res.status(422).send(val);
     }
   } catch (err) {
+    console.log(err);
     res.status(500).send('Fehler');
   }
 };

@@ -22,26 +22,26 @@ exports.addIncidentEntry = (req, res) => {
     masSubAreaId: incidentData.subArea,
     additionalLocationInfo: incidentData.additionalLocationInfo,
   }).then((event) => {
-    if (injuryData.spots) {
+    if (injuryData.injurySpots) {
       InjurySpot.findAll({
         where: {
           id: {
-            [Op.or]: injuryData.spots,
+            [Op.or]: injuryData.injurySpots,
           },
         },
       }).then((spots) => {
-        event.setInjurySpots(spots);
+        event.setMasInjurySpots(spots);
       });
     }
-    if (injuryData.types) {
+    if (injuryData.injuryTypes) {
       InjuryType.findAll({
         where: {
           id: {
-            [Op.or]: injuryData.types,
+            [Op.or]: injuryData.injuryTypes,
           },
         },
       }).then((types) => {
-        event.setInjuryTypes(types);
+        event.setMasInjuryTypes(types);
       });
     }
     if (personalData) {
